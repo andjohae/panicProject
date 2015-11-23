@@ -13,7 +13,8 @@
  targetPositionVector = [1.5*roomSize(1),0.5*roomSize(2)];
  velocityVector = maxVelocity*rand(1,nIndividuals)
  %MATRICES 
- 
+  structor  = struct('target Position Vector',targetPositionVector,...
+     'Velocity vector',velocityVector);
  %%%%%%%%%%%%%%%%%%%%%%%TimeLoop%%%%%%%%%%%%%%%%%%%%%%%%%%% 
  for allTime = 1:nTimesteps
  
