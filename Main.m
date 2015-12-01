@@ -22,6 +22,7 @@ run('Settings.m');
 
 %  Initialization
 % - Room (Walls)
+walls = WallGeneration(roomSize,doorWidth,openingLength);
 % - Desired position
 targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
 % - Agents
