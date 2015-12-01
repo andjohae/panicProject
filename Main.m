@@ -18,7 +18,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%% Initilize %%%%%%%%%%%%%%%%%%%%%%%%%
 %  Read settings
-run('Settings.m');
+run('Parameters.m');
 
 %  Initialization
 % - Room (Walls)
