@@ -1,5 +1,5 @@
-function acceleration = UpdateAcceleration(agents,PROPERTIES,bodyForceCoeff,...
-    frictionForceCoeff)
+function acceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
+    bodyForceCoeff,frictionForceCoeff)
 
   % Read properties
   position = agents(:,PROPERTIES.Position);
@@ -17,14 +17,18 @@ function acceleration = UpdateAcceleration(agents,PROPERTIES,bodyForceCoeff,...
   nAgents = size(agents,1);
 %   acceleration = zeros(nAgents,2); % Not needed if no loop over agents
   desiredVelocityCorrection= zeros(nAgents,2);
-  individualForces = zeros(nAgents,2);
+  agentForces = zeros(nAgents,2);
   wallForces = zeros(nAgents,2);
   
   % Calculate acceleration components
-  desiredVelocityCorrection = desiredSpeed(iAgent)
+  desiredVelocityCorrection = (repmat(desiredSpeed,1,2).*desiredDirection - ...
+      velocity) .* repmat(desiredTimeResolution.^(-1),1,2);
     
+  agentForces = CalculateAgentForces(agents,bodyForceCoeff,frictionForceCoeff);
+  
+  wallForces = CalculateWallForces(agents,walls,bodyForceCoeff,frictionForceCoeff);  
     
-  acceleration = desiredVelocityCorrection + (individualForces + wallForces).*...
+  acceleration = desiredVelocityCorrection + (agentForces + wallForces).*...
       repmat(mass.^(-1),1,2);
   
 end
