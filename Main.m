@@ -6,8 +6,8 @@
 %TODO: IntializeAgents()
 %TODO: IntializeWalls()
 %TODO: Main loop structure
-%TODO: UpdateAcceleration()
-  % - Subfunctions for all forces
+%TODO: CalculateAgentForces()
+%TODO: CalculateWallForces()
 %TODO: Calculate variable time step
 %TODO: UpdateVelocity()
 %TODO: UpdatePosition()
