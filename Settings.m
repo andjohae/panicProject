@@ -17,9 +17,12 @@ PROPERTIES = struct('Position',[1,2],...
 % Simulation parameters
 nAgents = 10;
 nTimeSteps = 10;
+deltaTime=0.1;
 
 % Room properties
-roomSize = 10;
+roomSize=[1 1];
+doorWidth=0.25;
+openingLength=0.1;
 
 % Agent properties
 meanMass = 50;
