@@ -35,6 +35,9 @@ structor  = struct('target Position Vector',targetPositionVector,...
    
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%% 
 for iTime = 1:nTimeSteps
- 
+  currentAcceleration=UpdateAcceleration();
+  agents(:,PROPERTIES.Velocity)=agents(:,PROPERTIES.Velocity)+UpdateVelocity(currentAcceleration)*deltaTime;
+  agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position) +UpdatePositions(currentVelocity)*deltaTime;
+  
 end 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
