@@ -20,13 +20,6 @@
 %  Read settings
 run('Settings.m');
 
-% Translation structor
-% IDEA: We could just use constants? 'POSITION = [1,2]' etc. Faster?
-translate = struct('Position',[1,2],...
-                   'Velocity',[3,4],...
-                   'Mass',5,...
-                   'Radius',6); % etc.
-
 %  Initialization
 % - Room (Walls)
 % - Desired position
