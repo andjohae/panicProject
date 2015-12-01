@@ -1,27 +1,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
- %Panic Project Main.m  
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%  Panic Project Main.m
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
+%%%%%%%%%%%%%%%%%%%%% TODO List %%%%%%%%%%%%%%%%%%%%%%%%%%
+%TODO: IntializeAgents()
+%TODO: IntializeWalls()
+%TODO: Main loop structure
+%TODO: UpdateAcceleration()
+  % - Subfunctions for all forces
+%TODO: Calculate variable time step
+%TODO: UpdateVelocity()
+%TODO: UpdatePosition()
+%TODO: Graphics
+  % - InitializeGraphics()
+  % - UpdateGraphics()
+%TODO:
 
- %%%%%%%%%%%%%%%%%%%%%%%Initilize%%%%%%%%%%%%%%%%%%%%%%%%%% 
- %CONSTANTS 
- nIndividuals = 10;
- maxVelocity = 1;%Remove??
- nTimeSteps = 10;
- roomSize = [10,10];
- %VECTORS 
- targetPositionVector = [1.5*roomSize(1),0.5*roomSize(2)];
-  massVector = rand(1,nIndividuals);
+%%%%%%%%%%%%%%%%%%%%%% Initilize %%%%%%%%%%%%%%%%%%%%%%%%%
+%  Read settings
+run('Settings.m');
 
- velocityVector = maxVelocity*rand(1,nIndividuals)
- %MATRICES  
- masterMatrix(1,:) = velocityVector;%
- masterMatrix(2,:) = massVector;%
+%  Initialization
+% - Room (Walls)
+% - Desired position
+targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
+% - Agents
+agents = InitializeAgents(); 
+
+% velocityVector = maxVelocity*rand(1,nIndividuals) % In --> InitializeAgents()
+
+% MATRICES - Remove?
+structor  = struct('target Position Vector',targetPositionVector,...
+     'Velocity vector',velocityVector);
+   
+%%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%% 
+for iTime = 1:nTimeSteps
  
- structor  = struct('rowIndexMass',2,...
-     'rowIndexVelocity',1);
- %%%%%%%%%%%%%%%%%%%%%%%TimeLoop%%%%%%%%%%%%%%%%%%%%%%%%%%% 
- for allTime = 1:nTimesteps
- 
- end 
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+end 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
