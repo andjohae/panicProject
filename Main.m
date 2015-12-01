@@ -41,3 +41,9 @@ for iTime = 1:nTimeSteps
   
 end 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%Graphics
+plot(walls(1:2,1),walls(1:2,2),'LineWidth',2);
+axis([-roomSize(1)*0.25 roomSize(1)*1.25 -roomSize(2)*0.25 roomSize(2)*1.25])
+%
+
+
