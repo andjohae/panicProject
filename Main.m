@@ -14,11 +14,11 @@
 %TODO: Graphics
   % - InitializeGraphics()
   % - UpdateGraphics()
-%TODO:
+%TODO: Implement impatience. In UpdateAcceleration or elsewhere?
 
 %%%%%%%%%%%%%%%%%%%%%% Initilize %%%%%%%%%%%%%%%%%%%%%%%%%
 %  Read settings
-run('Settings.m');
+run('Parameters.m');
 
 %  Initialization
 % - Room (Walls)
