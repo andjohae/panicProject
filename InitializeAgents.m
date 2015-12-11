@@ -1,6 +1,7 @@
-function agents = InitializeAgents(nAgents,PROPERTIES,roomSize)
+function agents = InitializeAgents(nAgents,PROPERTIES,meanMass,...
+  meanRadius,targetPosition,roomSize)
 
-agents = zeros(nAgents,nProperties);
+%agents = zeros(nAgents,nProperties);
 % Properties:
   % - Position [1,2]
 nAgentsSquared = ceil(nAgents^0.5);
@@ -11,6 +12,9 @@ end
 for i = 1:nAgents
   pos(i,2) = mod(i,nAgentsSquared)+1;
 end
+pos(:,1) = pos(:,1)/(max(pos(:,1))+1)*roomSize(1);
+pos(:,2) = pos(:,2)/(max(pos(:,2))+1)*roomSize(2);
+plot(pos(:,1),pos(:,2),'.','MarkerSize',20)
 agents(:,PROPERTIES.Position) = pos;
   % - Velocity [3,4]
 agents(:,PROPERTIES.Velocity) = zeros(nAgents,2);
@@ -21,7 +25,7 @@ agents(:,PROPERTIES.Velocity) = zeros(nAgents,2);
   % - Desired speed [7]
     agents(:,PROPERTIES.DesiredSpeed) = ones(nAgents,1);%Completely arbitrary
   % - Desired direction [8,9]
-    agents(:,PROPERTIES.DesiredDirection) = targetPosition*ones(nAgents,2);
+    agents(:,PROPERTIES.DesiredDirection) = ones(nAgents,1)*targetPosition-pos;
   % - Desired time resolution [10]
     agents(:,PROPERTIES. DesiredTimeResolution) = ones(nAgents,1);
   % - Repulsion coefficient [11]
