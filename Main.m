@@ -25,7 +25,8 @@ run('Parameters.m');
 % - Desired position
 targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
 % - Agents
-agents = InitializeAgents(); 
+agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
+  targetPosition,roomSize); 
 
 % velocityVector = maxVelocity*rand(1,nIndividuals) % In --> InitializeAgents()
 
