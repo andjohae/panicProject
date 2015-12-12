@@ -1,9 +1,6 @@
 function agentForces = CalculateAgentForces(agents, PROPERTIES, bodyForceCoeff,...
     frictionForceCoeff)
-
-  % NOTE: Vector or scalar multiplication of tangential forces?
-  %   More precisely, is the relative tangential velocity as vector or
-  %   scalar? If it's a vector, how do we multiplicate?
+  
   % Idea: Can we shorten evaluation time if we calculate forces pairwise?
   
   % Read necessary properties
@@ -39,9 +36,9 @@ function agentForces = CalculateAgentForces(agents, PROPERTIES, bodyForceCoeff,.
           
           % Calculate friction force
           tangent = [-unitDirection(2), unitDirection(1)];
-          relativeTangentialVelocity = (velocity(j,:)-velocity(i,:)) .* tangent;
+          relativeTangentialVelocity = (velocity(j,:)-velocity(i,:)) * tangent'; % Equivalent to scalar product?
           frictionForce(i,:) = frictionForceCoeff * (radiiSum - distance) * ...
-              relativeTangentialVelocity * tangent; % <--- SEE NOTE!
+              relativeTangentialVelocity * tangent;
         end
       else
         agentForces(i,:) = [0,0];
