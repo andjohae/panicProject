@@ -7,7 +7,6 @@ function acceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
   desiredSpeed = agents(:,PROPERTIES.DesiredSpeed);
   desiredDirection = agents(:,PROPERTIES.DesiredDirection);
   desiredTimeResolution = agents(:,PROPERTIES.DesiredTimeResolution);
-%   impatience = agents(:,PROPERTIES.Impatience); % Not implemented yet!
   
   % Calculate acceleration components
   desiredVelocityCorrection = (repmat(desiredSpeed,1,2).*desiredDirection - ...
@@ -18,6 +17,8 @@ function acceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
   
   wallForces = CalculateWallForces(agents, PROPERTIES, walls, bodyForceCoeff,...
       frictionForceCoeff);  
+    
+%   socialForces = CalculateSocialForces(agents,PROPERTIES,socialForceCoeff);  
     
   acceleration = desiredVelocityCorrection + (agentForces + wallForces).*...
       repmat(mass.^(-1),1,2);
