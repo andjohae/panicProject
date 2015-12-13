@@ -17,16 +17,16 @@ PROPERTIES = struct('Position',[1,2],...
 % Simulation parameters
 nAgents = 10;
 nTimeSteps = 10;
-deltaTime=0.1;
+deltaTime = 0.1;
 
 % Room properties
-roomSize=[1 1];
-doorWidth=0.25;
+roomSize=[20 20];
+doorWidth=1.5;
 openingLength=0.1;
 bodyForceCoeff = 0.3;
 frictionForceCoeff = 0.5; 
 % Agent properties
-meanMass = 50;
+meanMass = 80;
 meanRadius = 0.5;
 initialVelocity = zeros(nAgents,2);
 % Physics settings
