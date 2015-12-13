@@ -30,7 +30,7 @@ function agentForces = CalculateAgentForces(agents, PROPERTIES, bodyForceCoeff,.
         repulsionForce(i,:) = repulsionCoeff(i) * exp((radiiSum-distance)/...
             repulsionExp(i)) .* unitDirection;
         
-        if (distance <= radiiSum) % Check for collosion
+        if (distance <= radiiSum) % Check for collision
           % Calculate body force
           bodyForce(i,:) = bodyForceCoeff * (radiiSum - distance) .* unitDirection;
           
