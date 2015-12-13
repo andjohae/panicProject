@@ -23,11 +23,12 @@ deltaTime=0.1;
 roomSize=[1 1];
 doorWidth=0.25;
 openingLength=0.1;
-
+bodyForceCoeff = 0.3;
+frictionForceCoeff = 0.5; 
 % Agent properties
 meanMass = 50;
 meanRadius = 0.5;
-
+initialVelocity = zeros(nAgents,2);
 % Physics settings
 maxVelocity = 1;
 
