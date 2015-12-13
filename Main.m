@@ -22,6 +22,8 @@ run('Parameters.m');
 
 %  Initialization
 targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
+speedInDesiredDirection=zeros(1,nAgents);
+
 % - Room (Walls)
 walls = WallGeneration(roomSize,doorWidth,openingLength);
 figure(1)
@@ -45,9 +47,12 @@ structor  = struct('target Position Vector',targetPositionVector,...
 for iTime = 1:nTimeSteps
    currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
     bodyForceCoeff,frictionForceCoeff);
-  agents(:,PROPERTIES.Velocity)=agents(:,PROPERTIES.Velocity)+UpdateVelocity(currentAcceleration)*deltaTime;
-  agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position) +UpdatePositions(currentVelocity)*deltaTime;
-  
+    desiredDirection=bsxfun(@minus,agents(:,Properties.Position),targetPosition);
+    desiredDirection=desiredDirection/norm(desiredDirection);
+    speedInDesiredDirection=speedInDesiredDirection+agents(:,Properties.Velocity)*(desiredDirection);
+  agents(:,PROPERTIES.Velocity)=agents(:,PROPERTIES.Velocity)+currentAcceleration.*deltaTime;
+  agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position) +currentVelocity.*deltaTime;
+  agents(:,PROPERTIES.DesiredSpeed)=ImpatienceUpdate(agents(:,PROPERTIES.Velocity),agents(:,PROPERTIES.DesiredSpeed),speedInDesiredDirection,iTime);
 end 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %%
@@ -57,6 +62,5 @@ walls = WallGeneration(roomSize,doorWidth,openingLength);
 
 %Graphics
 %
-
 
 
