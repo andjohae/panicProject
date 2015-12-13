@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Panic Project Main.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+clc
 %%%%%%%%%%%%%%%%%%%%% TODO List %%%%%%%%%%%%%%%%%%%%%%%%%%
 %TODO: IntializeAgents()
 %TODO: IntializeWalls()
@@ -22,8 +22,7 @@ run('Parameters.m');
 
 %  Initialization
 targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
-speedInDesiopeningLower = (roomSize(2)-doorWidth)/2;
-redDirection=zeros(1,nAgents);
+speedInDesiredDirection=zeros(nAgents,1);
 
 % - Room (Walls)
 walls = WallGeneration(roomSize,doorWidth,openingLength);
@@ -41,19 +40,20 @@ agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
 % velocityVector = maxVelocity*rand(1,nIndividuals) % In --> InitializeAgents()
 
 % MATRICES - Remove?
-structor  = struct('target Position Vector',targetPositionVector,...
-  'Velocity vector',velocityVector);
+
 
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps
   currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
-    bodyForceCoeff,frictionForceCoeff);
-  desiredDirection=bsxfun(@minus,agents(:,Properties.Position),targetPosition);
-  desiredDirection=desiredDirection/norm(desiredDirection);
-  speedInDesiredDirection=speedInDesiredDirection+agents(:,Properties.Velocity)*(desiredDirection);
+  bodyForceCoeff,frictionForceCoeff);
+  desiredDirection=bsxfun(@minus,agents(:,PROPERTIES.Position),targetPosition);
+  desiredDirection=desiredDirection/norm(desiredDirection)
+  speedInDesiredDirection=speedInDesiredDirection+sum(agents(:,PROPERTIES.Velocity).*(desiredDirection),2);
   agents(:,PROPERTIES.Velocity)=agents(:,PROPERTIES.Velocity)+currentAcceleration.*deltaTime;
-  agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position) +currentVelocity.*deltaTime;
+  agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position)+ agents(:,PROPERTIES.Velocity).*deltaTime;
   agents(:,PROPERTIES.DesiredSpeed)=ImpatienceUpdate(agents(:,PROPERTIES.Velocity),agents(:,PROPERTIES.DesiredSpeed),speedInDesiredDirection,iTime);
+  plot(agents(:,PROPERTIES(1)),agents(:,PROPERTIES(2)),'MarkerSize',30);
+  drawnow update;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
