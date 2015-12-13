@@ -20,9 +20,9 @@ nTimeSteps = 10;
 deltaTime=0.1;
 
 % Room properties
-roomSize=[1 1];
-doorWidth=0.25;
-openingLength=0.1;
+roomSize=[100 50];
+doorWidth=1;
+openingLength=1;
 
 % Agent properties
 meanMass = 50;
