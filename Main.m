@@ -35,7 +35,7 @@ axis([-roomSize(1)*0.25 roomSize(1)*1.7 -roomSize(2)*0.25 roomSize(2)*1.25])
 % - Desired position
 % - Agents
 agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
-  targetPosition,roomSize);
+  targetPosition,roomSize,initialVelocity);
 
 % velocityVector = maxVelocity*rand(1,nIndividuals) % In --> InitializeAgents()
 
