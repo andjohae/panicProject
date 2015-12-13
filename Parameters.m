@@ -20,14 +20,15 @@ nTimeSteps = 10;
 deltaTime=0.1;
 
 % Room properties
-roomSize=[100 50];
-doorWidth=1;
-openingLength=1;
-
+roomSize=[20 20];
+doorWidth=1.5;
+openingLength=0.1;
+bodyForceCoeff = 0.3;
+frictionForceCoeff = 0.5; 
 % Agent properties
 meanMass = 50;
-meanRadius = 0.5;
-
+meanRadius = 0.0;
+initialVelocity = zeros(nAgents,2);
 % Physics settings
 maxVelocity = 1;
 
