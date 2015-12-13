@@ -44,16 +44,22 @@ agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
 
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps
-  currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
+    currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
   bodyForceCoeff,frictionForceCoeff);
+  
   desiredDirection=bsxfun(@minus,agents(:,PROPERTIES.Position),targetPosition);
   desiredDirection=desiredDirection/norm(desiredDirection)
   speedInDesiredDirection=speedInDesiredDirection+sum(agents(:,PROPERTIES.Velocity).*(desiredDirection),2);
+  
   agents(:,PROPERTIES.Velocity)=agents(:,PROPERTIES.Velocity)+currentAcceleration.*deltaTime;
   agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position)+ agents(:,PROPERTIES.Velocity).*deltaTime;
-  agents(:,PROPERTIES.DesiredSpeed)=ImpatienceUpdate(agents(:,PROPERTIES.Velocity),agents(:,PROPERTIES.DesiredSpeed),speedInDesiredDirection,iTime);
-  plot(agents(:,PROPERTIES(1)),agents(:,PROPERTIES(2)),'MarkerSize',30);
+  %agents(:,PROPERTIES.DesiredSpeed)=ImpatienceUpdate(agents(:,PROPERTIES.Velocity),agents(:,PROPERTIES.DesiredSpeed),speedInDesiredDirection,iTime);
+  clf
+  hold on
+  plot(walls(:,1),walls(:,2),'LineWidth',2);
+  plot(agents(:,PROPERTIES.Position(1)),agents(:,PROPERTIES.Position(2)),'.','MarkerSize',30);
   drawnow update;
+  
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -63,5 +69,3 @@ walls = WallGeneration(roomSize,doorWidth,openingLength);
 
 %Graphics
 %
-
-
