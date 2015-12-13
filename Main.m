@@ -22,10 +22,12 @@ run('Parameters.m');
 
 %  Initialization
 % - Room (Walls)
+walls = WallGeneration(roomSize,doorWidth,openingLength);
 % - Desired position
 targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
 % - Agents
-agents = InitializeAgents(); 
+agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
+  targetPosition,roomSize); 
 
 % velocityVector = maxVelocity*rand(1,nIndividuals) % In --> InitializeAgents()
 
@@ -35,7 +37,8 @@ structor  = struct('target Position Vector',targetPositionVector,...
    
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%% 
 for iTime = 1:nTimeSteps
-  currentAcceleration=UpdateAcceleration();
+   currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
+    bodyForceCoeff,frictionForceCoeff);
   agents(:,PROPERTIES.Velocity)=agents(:,PROPERTIES.Velocity)+UpdateVelocity(currentAcceleration)*deltaTime;
   agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position) +UpdatePositions(currentVelocity)*deltaTime;
   
