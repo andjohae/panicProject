@@ -21,10 +21,16 @@
 run('Parameters.m');
 
 %  Initialization
+targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
 % - Room (Walls)
 walls = WallGeneration(roomSize,doorWidth,openingLength);
+figure(1)
+clf
+hold on
+plot(walls(:,1),walls(:,2),'LineWidth',2);
+plot(targetPosition(1),targetPosition(2),'x')
+axis([-roomSize(1)*0.25 roomSize(1)*1.7 -roomSize(2)*0.25 roomSize(2)*1.25])
 % - Desired position
-targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
 % - Agents
 agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
   targetPosition,roomSize); 
@@ -44,9 +50,13 @@ for iTime = 1:nTimeSteps
   
 end 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%
+clf
+run('Parameters.m');
+walls = WallGeneration(roomSize,doorWidth,openingLength);
+
 %Graphics
-plot(walls(1:2,1),walls(1:2,2),'LineWidth',2);
-axis([-roomSize(1)*0.25 roomSize(1)*1.25 -roomSize(2)*0.25 roomSize(2)*1.25])
 %
+
 
 
