@@ -38,6 +38,7 @@ bondProbabilityPerAgent);
 
 % Initialize simulation graphics
 run('SetupSimulationGraphics.m');
+movieStruct = getframe(gcf); % PLAY: movie(figure,movieStruct,5)
 
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:1
@@ -75,6 +76,7 @@ for iTime = 1:1
   hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
   set(hTimeStamp, 'String', sprintf('Time: %d',iTime));
   drawnow update;
+  movieStruct = getframe(gcf);
   
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
