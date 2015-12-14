@@ -23,16 +23,20 @@ deltaTime=0.5;
 roomSize=[20 20];
 doorWidth=10;
 openingLength=1;
+
 % Agent properties
 meanMass = 50;
 meanRadius = 2;
 initialVelocity = zeros(nAgents,2);
-maxDesiredVelocity=15;
+maxDesiredSpeed = 5;
+
 % Physics settings
 maxVelocity = 1;
 bodyForceCoeff = 0.3;
 frictionForceCoeff = 0.5;
+
 % Social settings
 bondProbabilityPerAgent = 0.01;
 socialCorrelations = zeros(nAgents,nAgents);
+
 % Graphics settings
