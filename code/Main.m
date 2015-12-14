@@ -69,10 +69,9 @@ for iTime = 1:1
       sqrt(sum(initialVelocity.^2,2)) + (agents(:,PROPERTIES.Impatience) .* maxDesiredSpeed);
   
   % Update graphics
-  % draw connections
+  hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
   set(hAgentPlot, 'XData', agents(:,PROPERTIES.Position(1)), 'YData', ...
       agents(:,PROPERTIES.Position(2)));
-  hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
   set(hTimeStamp, 'String', sprintf('Time: %d',iTime));
   drawnow update;
   
