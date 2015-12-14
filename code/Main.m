@@ -35,7 +35,7 @@ agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
 
 % - Social Bonds
 socialCorrelations = InitilizeSocialNetwork(agents,PROPERTIES,socialCorrelations,...
-bondProbabilityPerAgent);
+ratioBondsPerAgent);
 
 % Initialize simulation graphics
 run('SetupSimulationGraphics.m');
@@ -78,7 +78,7 @@ for iTime = 1:nTimeSteps
   set(hTimeStamp, 'String', sprintf('Time: %d',iTime));
   drawnow update;
 
-  movieStruct = getframe(gcf);
+  movieStruct(iTime) = getframe(gcf);
   
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
