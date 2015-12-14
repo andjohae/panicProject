@@ -17,7 +17,7 @@ pos(:,2) = pos(:,2)/(max(pos(:,2))+1)*roomSize(2);
 %plot(pos(:,1),pos(:,2),'.','MarkerSize',20)
 agents(:,PROPERTIES.Position) = pos;
   % - Velocity [3,4]
-agents(:,PROPERTIES.Velocity) = zeros(nAgents,2);
+agents(:,PROPERTIES.Velocity) = initialVelocity;
   % - Mass [5]
     agents(:,PROPERTIES.Mass) = meanMass*ones(nAgents,1);
   % - Radius [6]

@@ -37,7 +37,7 @@ plot(targetPosition(1),targetPosition(2),'x','MarkerSize',150)
 % - Desired position
 % - Agents
 agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
-  targetPosition,roomSize);
+  targetPosition,roomSize, initialVelocity);
 
 % velocityVector = maxVelocity*rand(1,nIndividuals) % In --> InitializeAgents()
 
