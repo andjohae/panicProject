@@ -37,7 +37,7 @@ bodyForceCoeff = 0.3;
 frictionForceCoeff = 0.5;
 
 % Social settings
-bondProbabilityPerAgent = 0.01;
+ratioBondsPerAgent = 0.1;
 socialCorrelations = zeros(nAgents,nAgents);
 
 % Graphics settings

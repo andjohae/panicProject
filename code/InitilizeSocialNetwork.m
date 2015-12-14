@@ -1,15 +1,14 @@
-function correlationMatrix = InitilizeSocialNetwork(agents,PROPERTIES,correlationMatrix,...
-bondProbabilityPerAgent)
-nAgents = length(agents);
-p = bondProbabilityPerAgent/2;
-r = rand(nAgents,nAgents);
+function correlationMatrix = InitilizeSocialNetwork(nAgents,correlationMatrix,...
+  ratioBondsPerAgent)
+  p = ratioBondsPerAgent;
 %% CALCULATIONS
-for i = 2:nAgents
-  for j = 1:i-1
-    if r(i,j) < p %&& i ~= j
+  d = round(p*nAgents);
+  while sum(sum(correlationMatrix))/2 ~= d
+   i = randi(nAgents,1,1);
+   j = randi(nAgents,1,1);
+    if i ~= j
       correlationMatrix(i,j) = 1;
       correlationMatrix(j,i) = 1;
     end
   end
-end
 end

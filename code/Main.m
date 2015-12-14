@@ -39,6 +39,7 @@ bondProbabilityPerAgent);
 
 % Initialize simulation graphics
 run('SetupSimulationGraphics.m');
+movieStruct = getframe(gcf); % PLAY: movie(figure,movieStruct,5)
 
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps
@@ -77,5 +78,8 @@ for iTime = 1:nTimeSteps
   set(hTimeStamp, 'String', sprintf('Time: %d',iTime));
   drawnow update;
 
+  movieStruct = getframe(gcf);
+  
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%movie2avi(F, 'run1.avi', 'compression', 'None');
