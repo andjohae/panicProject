@@ -12,10 +12,4 @@ for i = 2:nAgents
     end
   end
 end
-%% PLOTTING TO BE DELETED
-figure
-hold on
-gplot(correlationMatrix,agents(:,PROPERTIES.Position),'k-');
-plot(agents(:,PROPERTIES.Position(:,1)),agents(:,PROPERTIES.Position(:,2)),'k.','MarkerSize',30);
-hold off
 end
