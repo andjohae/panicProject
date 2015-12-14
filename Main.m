@@ -41,22 +41,33 @@ agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
 socialCorrelations = InitilizeSocialNetwork(agents,PROPERTIES,socialCorrelations,...
 bondProbabilityPerAgent);
 
-%%%%%%%%%%%%%%%%%%%%%% MainLoop %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps*100
-  currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
+  % Update physics
+  currentAcceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
       bodyForceCoeff,frictionForceCoeff);
-  agents(:,PROPERTIES.Velocity)=agents(:,PROPERTIES.Velocity)+currentAcceleration.*deltaTime;
-  agents(:,PROPERTIES.Position)=agents(:,PROPERTIES.Position)+ agents(:,PROPERTIES.Velocity).*deltaTime;
+  agents(:,PROPERTIES.Velocity) = agents(:,PROPERTIES.Velocity) + ...
+      currentAcceleration .* deltaTime;
+  agents(:,PROPERTIES.Position) = agents(:,PROPERTIES.Position) + ...
+      agents(:,PROPERTIES.Velocity).*deltaTime;
+    % TODO: UpdatePositions() that checks if new positons are valid
   
-  newDesiredDirection = ones(nAgents,1)*targetPosition-agents(:,PROPERTIES.Position);
+  % Update desired direction
+  newDesiredDirection = ones(nAgents,1)*targetPosition - agents(:,PROPERTIES.Position);
   agents(:,PROPERTIES.DesiredDirection) = newDesiredDirection .* ...
       ( (1./sqrt( sum( newDesiredDirection.^2, 2 ) )) * [1,1] );
+
+  % Accumulate speed in desired direction
+  speedInDesiredDirection = speedInDesiredDirection + ...
+      sum(agents(:,PROPERTIES.Velocity).*(agents(:,PROPERTIES.DesiredDirection)),2);
   
-%   desiredDirection=bsxfun(@minus,targetPosition,agents(:,PROPERTIES.Position));
-%   agents(:,PROPERTIES.DesiredDirection)=desiredDirection/norm(desiredDirection,2);
-%   speedInDesiredDirection=speedInDesiredDirection+sum(agents(:,PROPERTIES.Velocity).*(agents(:,PROPERTIES.DesiredDirection)),2);
-  
-  agents(:,PROPERTIES.DesiredSpeed) = ImpatienceUpdate(agents, PROPERTIES,speedInDesiredDirection,iTime,maxDesiredVelocity);
+  % Update impatience
+  agents(:,PROPERTIES.Impatience) = 1 - (speedInDesiredDirection./iTime) ./ ...
+      agents(:,PROPERTIES.Velocity);
+ 
+  % Update desired speed
+  agents(:,PROPERTIES.DesiredSpeed) = (1-agents(:,PROPERTIES.Impatience))*[1,1] .* ...
+      initialVelocity + (agents(:,PROPERTIES.Impatience) .* maxDesiredSpeed);
   
   % Update graphics
   clf
@@ -70,10 +81,3 @@ for iTime = 1:nTimeSteps*100
   
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-clf
-run('Parameters.m');
-walls = WallGeneration(roomSize,doorWidth,openingLength);
-
-%Graphics
-%
