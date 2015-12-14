@@ -32,4 +32,7 @@ maxDesiredVelocity=15;
 maxVelocity = 1;
 bodyForceCoeff = 0.3;
 frictionForceCoeff = 0.5;
+% Social settings
+bondProbabilityPerAgent = 0.01;
+socialCorrelations = zeros(nAgents,nAgents);
 % Graphics settings
