@@ -80,3 +80,4 @@ for iTime = 1:1
   
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%movie2avi(F, 'run1.avi', 'compression', 'None');
