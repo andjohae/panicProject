@@ -47,7 +47,7 @@ bondProbabilityPerAgent);
 
 % MATRICES - Remove?
 
-
+%dfghjkl
 %%%%%%%%%%%%%%%%%%%%%% MainLoop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps*100
   currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
