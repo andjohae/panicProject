@@ -6,6 +6,7 @@ clf(hFig1);
 hold on;
 hWallPlot = plot(walls(:,1),walls(:,2),'LineWidth',2,'Color','k');
 hTargetPlot = plot(targetPosition(1),targetPosition(2),'rx','MarkerSize',10);
+hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
 hAgentPlot = plot(agents(:,PROPERTIES.Position(1)),agents(:,PROPERTIES.Position(2)),...
     '.','MarkerSize',30,'Color','b');
 hold off;
