@@ -1,5 +1,6 @@
 function agents = InitializeAgents(nAgents,PROPERTIES,meanMass,...
-  meanRadius,targetPosition,roomSize,initialVelocity)
+  meanRadius,targetPosition,roomSize,initialVelocity,initialDesiredSpeed,...
+  desiredTimeResolution)
 
 %agents = zeros(nAgents,nProperties);
 % Properties:
@@ -23,11 +24,11 @@ agents(:,PROPERTIES.Velocity) = initialVelocity;
   % - Radius [6]
     agents(:,PROPERTIES.Radius) = meanRadius*ones(nAgents,1);%normrnd(0,1,50,1)
   % - Desired speed [7]
-    agents(:,PROPERTIES.DesiredSpeed) = ones(nAgents,1);%Completely arbitrary
+    agents(:,PROPERTIES.DesiredSpeed) = initialDesiredSpeed;
   % - Desired direction [8,9]
     agents(:,PROPERTIES.DesiredDirection) = ones(nAgents,1)*targetPosition-pos;
   % - Desired time resolution [10]
-    agents(:,PROPERTIES. DesiredTimeResolution) = ones(nAgents,1);
+    agents(:,PROPERTIES. DesiredTimeResolution) = desiredTimeResolution;
   % - Repulsion coefficient [11]
     agents(:,PROPERTIES.RepulsionCoeff) = 2000*ones(nAgents,1);
   % - Repulsion exponent [12]

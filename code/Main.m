@@ -23,14 +23,15 @@ run('Parameters.m');
 
 %  Initialization
 targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
-speedInDesiredDirection=zeros(nAgents,1);
+avgSpeedInDesiredDirection=zeros(nAgents,1);
 
 % - Room (Walls)
 walls = WallGeneration(roomSize,doorWidth,openingLength);
 
 % - Agents
 agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
-  targetPosition,roomSize, initialVelocity);
+  targetPosition,roomSize, initialVelocity, initialDesiredSpeed, ...
+  desiredTimeResolution);
 
 % - Social Bonds
 socialCorrelations = InitilizeSocialNetwork(agents,PROPERTIES,socialCorrelations,...
@@ -40,7 +41,7 @@ bondProbabilityPerAgent);
 run('SetupSimulationGraphics.m');
 
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
-for iTime = 1:1
+for iTime = 1:nTimeSteps
   
   % Update physics
   currentAcceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
@@ -51,22 +52,23 @@ for iTime = 1:1
       agents(:,PROPERTIES.Velocity).*deltaTime;
     % TODO: UpdatePositions() that checks if new positons are valid
   
+  % Accumulate speed in desired direction
+  avgSpeedInDesiredDirection = (avgSpeedInDesiredDirection + ...
+      sum(agents(:,PROPERTIES.Velocity).*(agents(:,PROPERTIES.DesiredDirection)),2)...
+      .* deltaTime)/2;
+    
   % Update desired direction
   newDesiredDirection = ones(nAgents,1)*targetPosition - agents(:,PROPERTIES.Position);
   agents(:,PROPERTIES.DesiredDirection) = newDesiredDirection .* ...
       ( (1./sqrt( sum( newDesiredDirection.^2, 2 ) )) * [1,1] );
-
-  % Accumulate speed in desired direction
-  speedInDesiredDirection = speedInDesiredDirection + ...
-      sum(agents(:,PROPERTIES.Velocity).*(agents(:,PROPERTIES.DesiredDirection)),2);
-  
-  % Update impatience
-  agents(:,PROPERTIES.Impatience) = 1 - (speedInDesiredDirection./iTime) ./ ...
-      sqrt( sum(agents(:,PROPERTIES.Velocity).^2,2) );
  
   % Update desired speed
   agents(:,PROPERTIES.DesiredSpeed) = (1-agents(:,PROPERTIES.Impatience)).* ...
-      sqrt(sum(initialVelocity.^2,2)) + (agents(:,PROPERTIES.Impatience) .* maxDesiredSpeed);
+      initialDesiredSpeed + (agents(:,PROPERTIES.Impatience) .* maxDesiredSpeed);
+    
+  % Update impatience
+  agents(:,PROPERTIES.Impatience) = 1 - avgSpeedInDesiredDirection ./ ...
+      agents(:,PROPERTIES.DesiredSpeed);
   
   % Update graphics
   hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
@@ -74,6 +76,6 @@ for iTime = 1:1
       agents(:,PROPERTIES.Position(2)));
   set(hTimeStamp, 'String', sprintf('Time: %d',iTime));
   drawnow update;
-  
+
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
