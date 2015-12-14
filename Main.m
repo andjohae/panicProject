@@ -37,6 +37,10 @@ axis([-roomSize(1)*0.25 roomSize(1)*1.7 -roomSize(2)*0.25 roomSize(2)*1.25])
 agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
   targetPosition,roomSize, initialVelocity);
 
+% - Social Bonds
+socialCorrelations = InitilizeSocialNetwork(agents,PROPERTIES,socialCorrelations,...
+bondProbabilityPerAgent);
+
 %%%%%%%%%%%%%%%%%%%%%% MainLoop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps*100
   currentAcceleration=UpdateAcceleration(agents,walls,PROPERTIES,...
