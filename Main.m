@@ -39,6 +39,10 @@ plot(targetPosition(1),targetPosition(2),'x','MarkerSize',150)
 agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
   targetPosition,roomSize, initialVelocity);
 
+% - Social Bonds
+socialCorrelations = InitilizeSocialNetwork(agents,PROPERTIES,socialCorrelations,...
+bondProbabilityPerAgent);
+
 % velocityVector = maxVelocity*rand(1,nIndividuals) % In --> InitializeAgents()
 
 % MATRICES - Remove?
