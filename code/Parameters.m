@@ -15,7 +15,7 @@ PROPERTIES = struct('Position',[1,2],...
   'Impatience',13);
 
 % Simulation parameters
-nAgents = 10;
+nAgents = 48;
 nTimeSteps = 10^4;
 deltaTime = 0.001;
 
