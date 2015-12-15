@@ -16,13 +16,13 @@ PROPERTIES = struct('Position',[1,2],...
 
 % Simulation parameters
 nAgents = 10;
-nTimeSteps = 10^3;
-deltaTime = 0.01;
+nTimeSteps = 10^4;
+deltaTime = 0.001;
 
 % Room properties
 roomSize=[20 20];
-doorWidth=10;
-openingLength=1;
+doorWidth=5;
+openingLength=5;
 
 % Agent properties
 meanMass = 50;
@@ -30,11 +30,11 @@ meanRadius = 0.3;
 initialVelocity = zeros(nAgents,2);
 initialDesiredSpeed = 1*ones(nAgents,1);
 maxDesiredSpeed = 5;
-desiredTimeResolution = 0.5*ones(nAgents,1);
+desiredTimeResolution = 1*ones(nAgents,1);
 % Physics settings
 maxVelocity = 1;
-bodyForceCoeff = 0.3;
-frictionForceCoeff = 0.5;
+bodyForceCoeff = 1.2*10^5;
+frictionForceCoeff = 2.4*10^5;
 
 % Social settings
 ratioBondsPerAgent = 0.1;
