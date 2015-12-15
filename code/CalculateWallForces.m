@@ -23,28 +23,48 @@ function wallForces =  CalculateWallForces(agents,PROPERTIES,walls,...
       % Check if current wall is to be interacted with
       if ( logical(walls(iCorner,3)) || logical(walls((iCorner+1),3)) )
         
+        radiiSum = radius(iAgent); % Walls don't have thickness
+        
         % Compute wall from corners
-        wallTangent = walls( iCorner+1, 1:2 ) - walls( iCorner, 1:2 );
-        wallTangent = wallTangent./norm(wallTangent); % Normalize
-  
+        wallVector = walls( iCorner+1, 1:2 ) - walls( iCorner, 1:2 );
+        wallLength = norm(wallVector);
+        wallTangent = wallVector./wallLength; % Normalize
         wallNormal = [wallTangent(2), -wallTangent(1)];
-        distance = position(iAgent,:)*wallNormal';
-        radiiSum = radius(iAgent);
+        
+        % Calculate distance from wall to agent:
+        % - Calculate distance from first corner to projection on wall
+        alpha = (wallVector) * (position(iAgent,:)-walls(iCorner,1:2))';
+        % - Determine which distance to use (where the projection of the
+        %   agent positon on the wall segment is)
+        if (alpha < 0) % outside wall (on first corner side)
+          distance = norm( position(iAgent,:) - walls(iCorner,1:2) );
+          normalDirection = (position(iAgent,:) - walls(iCorner,1:2))./distance;
+        elseif (alpha > wallLength) % outside wall (on second corner side)
+          distance = norm( position(iAgent,:) - walls(iCorner+1,1:2) );
+          normalDirection = (position(iAgent,:) - walls(iCorner+1,1:2))./distance;
+        else % projection is ON the wall segment
+          distance = ( position(iAgent,:) - walls(iCorner,1:2) ) * wallNormal';
+          normalDirection = wallNormal;
+        end
+        
+        tangentDirection = [-normalDirection(2), normalDirection(1)];
         
         % Calculate repulsion force
         repulsionForce(iCorner,:) = repulsionCoeff(iAgent) * exp((radiiSum-distance)/...
-            repulsionExp(iAgent)) .* wallNormal;
+            repulsionExp(iAgent)) .* normalDirection;
 
         if (distance <= radiiSum) % Check for collision
           % Calculate body force
-          bodyForce(iCorner,:) = bodyForceCoeff * (radiiSum - distance) .* wallNormal;
+          bodyForce(iCorner,:) = bodyForceCoeff * (radiiSum - distance) .* ...
+              normalDirection;
 
           % Calculate friction force
-          relativeTangentialVelocity = (-velocity(iAgent,:)) * wallTangent';
-          frictionForce(iCorner,:) = frictionForceCoeff * (radiiSum - distance) * ...
-              relativeTangentialVelocity * wallTangent;
+          relativeTangentialVelocity = (-velocity(iAgent,:)) * tangentDirection';
+          frictionForce(iCorner,:) = frictionForceCoeff * (radiiSum - distance)...
+              * relativeTangentialVelocity * tangentDirection;
         end
-      end
+        
+      end % End of interaction check
       
     end % End of wall loop
     
