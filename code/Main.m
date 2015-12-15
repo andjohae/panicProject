@@ -4,18 +4,10 @@
 clc;
 clear all;
 %%%%%%%%%%%%%%%%%%%%% TODO List %%%%%%%%%%%%%%%%%%%%%%%%%%
-%TODO: IntializeAgents()
-%TODO: IntializeWalls()
-%TODO: Main loop structure
-%TODO: CalculateAgentForces()
-%TODO: CalculateWallForces()
-%TODO: Calculate variable time step
-%TODO: UpdateVelocity()
-%TODO: UpdatePosition()
-%TODO: Graphics
-% - InitializeGraphics()
-% - UpdateGraphics()
-%TODO: Implement impatience. In UpdateAcceleration or elsewhere?
+% TODO: UpdatePositions() that checks if new positons are valid
+% TODO: Implement social force
+% - Modular mathematical formula for social force, ie. allow different
+%   functions (exponential, linear, quadratic etc.) of partner distance 
 
 %%%%%%%%%%%%%%%%%%%%%% Initilize %%%%%%%%%%%%%%%%%%%%%%%%%
 %  Read settings
@@ -24,6 +16,7 @@ run('Parameters.m');
 %  Initialization
 targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
 avgSpeedInDesiredDirection=zeros(nAgents,1);
+time = 0;
 
 % - Room (Walls)
 walls = WallGeneration(roomSize,doorWidth,openingLength);
@@ -44,14 +37,20 @@ run('SetupSimulationGraphics.m');
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps
   
-  % Update physics
+  % Update model physics
+  % - acceleration
   currentAcceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
       bodyForceCoeff,frictionForceCoeff);
+  % - variable time step
+  deltaTime = CalculateVariableTimeStep(currentAcceleration,defaultDeltaTime,...
+      velocityChangeLimit, timeStepMultiplier, minimumDeltaTime);
+  time = time + deltaTime;
+  % - velocity
   agents(:,PROPERTIES.Velocity) = agents(:,PROPERTIES.Velocity) + ...
       currentAcceleration .* deltaTime;
+  % - position
   agents(:,PROPERTIES.Position) = agents(:,PROPERTIES.Position) + ...
       agents(:,PROPERTIES.Velocity).*deltaTime;
-    % TOD O: UpdatePositions() that checks if new positons are valid
   
   % Accumulate speed in desired direction
   avgSpeedInDesiredDirection = (avgSpeedInDesiredDirection + ...
@@ -75,7 +74,7 @@ for iTime = 1:nTimeSteps
   hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
   set(hAgentPlot, 'XData', agents(:,PROPERTIES.Position(1)), 'YData', ...
       agents(:,PROPERTIES.Position(2)));
-  set(hTimeStamp, 'String', sprintf('Time: %d',iTime));
+  set(hTimeStamp, 'String', sprintf('Time: %.5f s',time));
   drawnow update;
 
 %   movieStruct(iTime) = getframe(gcf);
