@@ -39,7 +39,7 @@ ratioBondsPerAgent);
 
 % Initialize simulation graphics
 run('SetupSimulationGraphics.m');
-movieStruct = getframe(gcf); % PLAY: movie(figure,movieStruct,5)
+% movieStruct = getframe(gcf); % PLAY: movie(figure,movieStruct,5)
 
 %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
 for iTime = 1:nTimeSteps
@@ -51,7 +51,7 @@ for iTime = 1:nTimeSteps
       currentAcceleration .* deltaTime;
   agents(:,PROPERTIES.Position) = agents(:,PROPERTIES.Position) + ...
       agents(:,PROPERTIES.Velocity).*deltaTime;
-    % TODO: UpdatePositions() that checks if new positons are valid
+    % TOD O: UpdatePositions() that checks if new positons are valid
   
   % Accumulate speed in desired direction
   avgSpeedInDesiredDirection = (avgSpeedInDesiredDirection + ...
@@ -78,7 +78,7 @@ for iTime = 1:nTimeSteps
   set(hTimeStamp, 'String', sprintf('Time: %d',iTime));
   drawnow update;
 
-  movieStruct(iTime) = getframe(gcf);
+%   movieStruct(iTime) = getframe(gcf);
   
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
