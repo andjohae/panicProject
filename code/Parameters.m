@@ -20,11 +20,11 @@ nTimeSteps = 10^4;
 defaultDeltaTime = 0.01;
 timeStepMultiplier = 0.95;
 minimumDeltaTime = 10^(-5);
-velocityChangeLimit = 0.01;
+velocityChangeLimit = 0.05;
 
 % Room properties
 roomSize=[20 20];
-doorWidth=5;
+doorWidth=1;
 openingLength=5;
 
 % Agent properties
