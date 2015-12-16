@@ -32,7 +32,7 @@ agents(:,PROPERTIES.Velocity) = initialVelocity;
   % - Repulsion coefficient [11]
     agents(:,PROPERTIES.RepulsionCoeff) = 2000*ones(nAgents,1);
   % - Repulsion exponent [12]
-    agents(:,PROPERTIES.RepulsionExp) = 0.8*ones(nAgents,1);
+    agents(:,PROPERTIES.RepulsionExp) = 0.08*ones(nAgents,1);
   % - Impatience [13]
     agents(:,PROPERTIES.Impatience) = zeros(nAgents,1);
 end
