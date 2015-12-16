@@ -17,7 +17,10 @@ PROPERTIES = struct('Position',[1,2],...
 % Simulation parameters
 nAgents = 48;
 nTimeSteps = 10^4;
-deltaTime = 0.001;
+defaultDeltaTime = 0.01;
+timeStepMultiplier = 0.95;
+minimumDeltaTime = 10^(-5);
+velocityChangeLimit = 0.01;
 
 % Room properties
 roomSize=[20 20];
