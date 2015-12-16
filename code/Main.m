@@ -22,7 +22,7 @@ clear all;
 run('Parameters.m');
 
 %  Initialization
-targetPosition = [1.5*roomSize(1),0.5*roomSize(2)];
+targetPosition = [1.1*roomSize(1),0.5*roomSize(2)];
 avgSpeedInDesiredDirection=zeros(nAgents,1);
 
 % - Room (Walls)
