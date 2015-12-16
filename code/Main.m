@@ -4,10 +4,13 @@
 clc;
 clear all;
 %%%%%%%%%%%%%%%%%%%%% TODO List %%%%%%%%%%%%%%%%%%%%%%%%%%
-% TODO: UpdatePositions() that checks if new positons are valid
+% TODO: UpdatePositions() that checks if new positons are valid and removes
+%   agents that have arrived at goal (vertical line at target position)
+% - Should also count when agents escape the room
 % TODO: Implement social force
 % - Modular mathematical formula for social force, ie. allow different
 %   functions (exponential, linear, quadratic etc.) of partner distance 
+% TODO: Fix agent plot --> scatter() can set individual markersizes!
 
 %%%%%%%%%%%%%%%%%%%%%% Initilize %%%%%%%%%%%%%%%%%%%%%%%%%
 %  Read settings
