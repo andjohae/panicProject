@@ -21,9 +21,7 @@ function wallForces =  CalculateWallForces(agents,PROPERTIES,walls,...
     for iCorner = 1:nWalls % Loop over all corners in wall matrix
       
       % Check if current wall is to be interacted with
-      if ( logical(walls(iCorner,3)) || logical(walls((iCorner+1),3)) )
-        
-        radiiSum = radius(iAgent); % Walls don't have thickness
+      if ( logical(walls(iCorner,3)) && logical(walls((iCorner+1),3)) )
         
         % Compute wall from corners
         wallVector = walls( iCorner+1, 1:2 ) - walls( iCorner, 1:2 );
@@ -31,21 +29,30 @@ function wallForces =  CalculateWallForces(agents,PROPERTIES,walls,...
         wallTangent = wallVector./wallLength; % Normalize
         wallNormal = [wallTangent(2), -wallTangent(1)];
         
-        % Calculate distance from wall to agent:
-        % - Calculate distance from first corner to projection on wall
-        alpha = (wallVector) * (position(iAgent,:)-walls(iCorner,1:2))';
-        % - Determine which distance to use (where the projection of the
-        %   agent positon on the wall segment is)
-        if (alpha < 0) % outside wall (on first corner side)
-          distance = norm( position(iAgent,:) - walls(iCorner,1:2) );
-          normalDirection = (position(iAgent,:) - walls(iCorner,1:2))./distance;
-        elseif (alpha > wallLength) % outside wall (on second corner side)
-          distance = norm( position(iAgent,:) - walls(iCorner+1,1:2) );
-          normalDirection = (position(iAgent,:) - walls(iCorner+1,1:2))./distance;
-        else % projection is ON the wall segment
-          distance = ( position(iAgent,:) - walls(iCorner,1:2) ) * wallNormal';
+        radiiSum = radius(iAgent); % Walls don't have thickness
+        
+        distance = ...
+        abs((walls(iCorner+1,2)-walls(iCorner,2))*position(iAgent,1)...
+          -(walls(iCorner+1,1)-walls(iCorner,1))*position(iAgent,2)...
+          +walls(iCorner+1,1)*walls(iCorner,2)-walls(iCorner+1,2)*walls(iCorner,1))/...
+          ((walls(iCorner+1,2)-walls(iCorner,2))^2 ...
+          +(walls(iCorner+1,1)-walls(iCorner,1))^2)^0.5;
+        
+        perpPoint = position(iAgent,:) + distance*wallNormal;
+        if norm(perpPoint-walls( iCorner+1, 1:2 )) + norm(perpPoint-walls( iCorner, 1:2 )) > wallLength
+          a = (position(iAgent,:) - walls(iCorner,1:2));
+          b = (position(iAgent,:) - walls(iCorner+1,1:2));
+          if norm(a) < norm(b)
+            distance = norm(a);
+            normalDirection = (a)./distance;
+          else 
+            distance = norm(b);
+            normalDirection = (b)./distance;
+          end
+        else 
           normalDirection = wallNormal;
         end
+      
         
         tangentDirection = [-normalDirection(2), normalDirection(1)];
         
@@ -53,23 +60,23 @@ function wallForces =  CalculateWallForces(agents,PROPERTIES,walls,...
         repulsionForce(iCorner,:) = repulsionCoeff(iAgent) * exp((radiiSum-distance)/...
             repulsionExp(iAgent)) .* normalDirection;
 
-        if (distance <= radiiSum) % Check for collision
-          % Calculate body force
-          bodyForce(iCorner,:) = bodyForceCoeff * (radiiSum - distance) .* ...
-              normalDirection;
-
-          % Calculate friction force
-          relativeTangentialVelocity = (-velocity(iAgent,:)) * tangentDirection';
-          frictionForce(iCorner,:) = frictionForceCoeff * (radiiSum - distance)...
-              * relativeTangentialVelocity * tangentDirection;
-        end
-        
+%         if (distance <= radiiSum) % Check for collision
+%           % Calculate body force
+%           bodyForce(iCorner,:) = bodyForceCoeff * (radiiSum - distance) .* ...
+%               normalDirection;
+% 
+%           % Calculate friction force
+%           relativeTangentialVelocity = (-velocity(iAgent,:)) * tangentDirection';
+%           frictionForce(iCorner,:) = frictionForceCoeff * (radiiSum - distance)...
+%               * relativeTangentialVelocity * tangentDirection;
+%         end
+%         
       end % End of interaction check
       
     end % End of wall loop
     
     wallForces(iAgent,:) = sum(repulsionForce,1) + sum(bodyForce,1) + ...
-        sum(frictionForce,1);
+        +sum(frictionForce,1);
     
   end
 end
