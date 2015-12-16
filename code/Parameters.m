@@ -23,7 +23,7 @@ minimumDeltaTime = 10^(-5);
 velocityChangeLimit = 0.05; % Author's suggestion: 0.01 [s]
 
 % Room properties
-roomSize = [20 20]; % Author's suggestion: [15 15] [m]
+roomSize = [10 10]; % Author's suggestion: [15 15] [m]
 doorWidth = 1;      % Author's suggestion: 1 [m]
 openingLength = 5;
 
