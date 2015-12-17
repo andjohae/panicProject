@@ -1,5 +1,4 @@
-function socialForces = CalculateSocialForces(agents,PROPERTIES,socialForceCoeff,...
-    socialCorrelations)
+function socialForces = CalculateSocialForces(agents,PROPERTIES,socialCorrelations)
 
   % Read necessary properties
   position = agents(:,PROPERTIES.Position);
@@ -14,12 +13,12 @@ function socialForces = CalculateSocialForces(agents,PROPERTIES,socialForceCoeff
   for iAgent = 1:nAgents
     iPartner = partnerAgents(iAgent);
     if (iPartner ~= 0) % iPartner == 0 means no partner assigned
-      direction = position(iAgent,:) - position(iPartner,:);
+      direction = position(iPartner,:) - position(iAgent,:);
       distance = norm(direction);
       unitDirection = direction ./ distance;
       
       % Plug in desired force model here
-      socialForceMagnitude = SocialForceLinear(distance,socialForceCoeff);
+      socialForceMagnitude = SocialForceLinear(distance);
       
       socialForces(iAgent) = socialForceMagnitude .* unitDirection;
     end

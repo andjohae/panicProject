@@ -43,7 +43,7 @@ for iTime = 1:nTimeSteps
   % Update model physics
   % - acceleration
   currentAcceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
-      bodyForceCoeff,frictionForceCoeff);
+      bodyForceCoeff,frictionForceCoeff,socialCorrelations);
   % - variable time step
   deltaTime = CalculateVariableTimeStep(currentAcceleration,defaultDeltaTime,...
       velocityChangeLimit, timeStepMultiplier, minimumDeltaTime);
