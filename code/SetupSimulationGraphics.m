@@ -2,8 +2,9 @@
 
 hFig1 = figure(1);
 clf(hFig1);
+set(hFig1,'Position',[800 400 500 500]);
 
-sizeAdjustment=1.43*1.6;
+sizeAdjustment=2*0.3*1; 
 hold on;
 hWallPlot = plot(walls(:,1),walls(:,2),'LineWidth',2,'Color','k');
 hTargetPlot = plot(targetPosition(1),targetPosition(2),'rx','MarkerSize',10);
@@ -22,7 +23,7 @@ axpos = get(gca,'Position');
 set(gca, 'Units', currentunits);
 markerWidthX = sizeAdjustment/diff(xlim)*axpos(3);
 markerWidthY = sizeAdjustment/diff(ylim)*axpos(4);
-set(hAgentPlot, 'SizeData', markerWidthX.*markerWidthY)
+set(hAgentPlot, 'SizeData', markerWidthX.*markerWidthY);
 hTimeStamp = text(-5, -7, sprintf('Time: %d',0));
 set(hTimeStamp, 'Interpreter','Latex','FontSize',14);
 drawnow;
