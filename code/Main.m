@@ -79,6 +79,8 @@ for iTime = 1:nTimeSteps
   hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
   set(hAgentPlot, 'XData', agents(:,PROPERTIES.Position(1)), 'YData', ...
       agents(:,PROPERTIES.Position(2)));
+  set(hAgentPlot, 'SizeData', markerWidthX.*markerWidthX)
+
   set(hTimeStamp, 'String', sprintf('Time: %.5f s',time));
   drawnow update;
 
