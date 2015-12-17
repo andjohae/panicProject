@@ -1,6 +1,8 @@
-function  [agents,nAgents,avgSpeedInDesiredDirection,initialDesiredSpeed ] ...
+function  [agents,nAgents,avgSpeedInDesiredDirection,initialDesiredSpeed,...
+  socialCorrelations,numberOfAgentsOut ] ...
     = RemoveAgentIfOut( agents,nAgents,...
-    PROPERTIES,roomSize,avgSpeedInDesiredDirection,initialDesiredSpeed  )
+    PROPERTIES,roomSize,avgSpeedInDesiredDirection,initialDesiredSpeed,...
+    socialCorrelations,time,numberOfAgentsOut )
   % - Check Position
   if any(agents(:,PROPERTIES.Position(1)) > (roomSize(1)+agents(:,PROPERTIES.Radius)))
     indexToRM =  find(agents(:,PROPERTIES.Position(1)) > (roomSize(1)+agents(:,PROPERTIES.Radius)));
@@ -8,6 +10,9 @@ function  [agents,nAgents,avgSpeedInDesiredDirection,initialDesiredSpeed ] ...
     avgSpeedInDesiredDirection(indexToRM) = [];
     nAgents = length(avgSpeedInDesiredDirection);
     initialDesiredSpeed(indexToRM) = [];
+    socialCorrelations(indexToRM,:) = [];
+    socialCorrelations(:,indexToRM) = [];
+    numberOfAgentsOut(:,end+1)=[length(indexToRM);time];
   end
 end
 
