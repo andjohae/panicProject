@@ -1,0 +1,30 @@
+Hi everbody! <names> 
+
+Nils:
+
+We're here to talk about panic behaviour, specifically when this occurs in large groups. So what is panic, exactly - how do you define it?
+In simple terms it's a behaviour characteristed by fear, irrationality and hysterical actions. It's also a behaviour that can spread very 
+quickly in a group, leading to mass or corwd panic, which can escalate into catastrophic behvaiour.
+
+So, how does this occur in the first place.
+
+Well, first you need a large group of people. Crowds even in perfect conditions are rarely known for organized behaviour or 
+rational response. Now, if a bottleneck in movement occurs, say by someone getting injured, or just by being in a constrained space,
+this can lead to pushing, shoving, and disorder in the crowd. This in turn leads to more bottlenecks and injuries, creating a feedback loop
+and escalating the situation.
+
+We have some examples of this kind of behaviour - We'll not go
+through the lists of injured and killed, but these accident can be very lethal. You'll notice many of these are from football matches. So it's easy to blame it on say,
+rowdy football fans, but in the majority of these cases there was no external conflict. Most of these occured simply from tight spaces
+and lack of room, which simply escalted <some examples from Hillsborough/Ibrox> 
+
+So, we decided to research this behaviour, using a model that from the study "Simulating dynamical features of escape panic"
+. This model is based on many agents all trying to move towards the same location, and the force interaction between the agents. It's a really interesting dynamic,
+but we wanted to add some more social factors in the mix - in the original model, every agent acts idependent of every other agents.
+So we decided to see what happened if we created a social bond between two agents -  simply put, a desire to be close and find the other
+one in the pair. WE felt it was a reasonable assumption to make that even in a panicked crowd, you'd be interested in finding your loved ones
+and make sure that they were safe.
+
+So next we'll go into the model in more detail.
+
+<Timmy/Andreas>
