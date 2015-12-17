@@ -21,7 +21,7 @@ function socialForces = CalculateSocialAcc(agents,PROPERTIES,socialCorrelations)
         unitDirection = direction ./ distance;
 
         % Plug in desired force model here
-        socialForceMagnitude = SocialForceLinear(distance);
+        socialForceMagnitude = SocialAccLinear(distance);
 
         socialForces(iAgent,:) = socialForces(iAgent,:) + ...
             socialForceMagnitude .* unitDirection;
