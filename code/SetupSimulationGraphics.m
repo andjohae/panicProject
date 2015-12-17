@@ -25,4 +25,4 @@ markerWidthY = sizeAdjustment/diff(ylim)*axpos(4);
 set(hAgentPlot, 'SizeData', markerWidthX.*markerWidthY)
 hTimeStamp = text(-5, -7, sprintf('Time: %d',0));
 set(hTimeStamp, 'Interpreter','Latex','FontSize',14);
-dr  awnow;
+drawnow;
