@@ -39,7 +39,7 @@ function wallForces =  CalculateWallForces_2(agents,PROPERTIES,walls,...
         projectionPosition = wallTangent * (position(iAgent,:)-walls(iCorner,1:2))'; 
         
         % Only interact with wall if projection of agent is ON the wall segment
-        if ( (projectionPosition > 0) && (projectionPosition < wallLength) ) 
+        if ( (projectionPosition > (0-radius(iAgent))) && (projectionPosition < (wallLength+radius(iAgent))) ) 
           distance = ( position(iAgent,:) - walls(iCorner,1:2) ) * wallNormal';
           
           % Calculate repulsion force

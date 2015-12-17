@@ -15,7 +15,7 @@ PROPERTIES = struct('Position',[1,2],...
   'Impatience',13);
 
 % Simulation parameters
-nAgents = 25;
+nAgents = 81;
 nTimeSteps = 10^4;
 defaultDeltaTime = 0.01;    % Author's suggestion: 0.01 [s]
 timeStepMultiplier = 0.95;  % Author's suggestion: 0.95 [s]

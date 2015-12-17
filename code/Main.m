@@ -19,6 +19,7 @@ run('Parameters.m');
 %  Initialization
 targetPosition = [1.1*roomSize(1),0.5*roomSize(2)];
 avgSpeedInDesiredDirection=zeros(nAgents,1);
+numberOfAgentsOut = [0;0];
 time = 0;
 
 % - Room (Walls)
