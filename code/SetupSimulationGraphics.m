@@ -26,4 +26,3 @@ set(hAgentPlot, 'SizeData', markerWidthX.*markerWidthX)
 hTimeStamp = text(-5, -7, sprintf('Time: %d',0));
 set(hTimeStamp, 'Interpreter','Latex','FontSize',14);
 drawnow;
-/n
