@@ -18,8 +18,8 @@ function acceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
   wallForces = CalculateWallForces_2(agents, PROPERTIES, walls, bodyForceCoeff,...
       frictionForceCoeff);  
     
-  socialForces = CalculateSocialForces(agents,PROPERTIES,socialCorrelations);  
+  socialAcceleration = CalculateSocialAcc(agents,PROPERTIES,socialCorrelations);  
     
   acceleration = desiredVelocityCorrection + (agentForces + wallForces).*...
-      repmat(mass.^(-1),1,2);
+      repmat(mass.^(-1),1,2) + socialAcceleration;
 end

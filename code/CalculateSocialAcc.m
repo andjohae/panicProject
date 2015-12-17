@@ -1,4 +1,4 @@
-function socialForces = CalculateSocialForces(agents,PROPERTIES,socialCorrelations)
+function socialForces = CalculateSocialAcc(agents,PROPERTIES,socialCorrelations)
 
   % Read necessary properties
   position = agents(:,PROPERTIES.Position);
