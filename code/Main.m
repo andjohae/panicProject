@@ -16,12 +16,12 @@ clear all;
 saveTime = zeros(1,51);
 saveNSurvive = 0;
 %  Read settings
-for indexDesiredVelocity = 0.6:0.2:8
+for indexDesiredVelocity = 0.8:0.2:8
   run('Parameters.m');
   %  Initialization
   targetPosition = [1.1*roomSize(1),0.5*roomSize(2)];
   avgSpeedInDesiredDirection=zeros(nAgents,1);
-  numberOfAgentsOut = [0;0];
+  numberOfAgentsOut = [indexDesiredVelocity;0];
   time = 0;
   nAgentsOrg = nAgents;
   
@@ -38,7 +38,7 @@ for indexDesiredVelocity = 0.6:0.2:8
     ratioBondsPerAgent);
   
   % Initialize simulation graphics
-  %run('SetupSimulationGraphics.m');
+  run('SetupSimulationGraphics.m');
   % movieStruct = getframe(gcf); % PLAY: movie(figure,movieStruct,5)
   
   random = normrnd(0,1,nTimeSteps,nAgents);
@@ -88,7 +88,7 @@ for indexDesiredVelocity = 0.6:0.2:8
     
     newDesiredDirection = ones(nAgents,1)...
       *(targetPosition) - agents(:,PROPERTIES.Position);
-    newDesiredDirection(:,2) = newDesiredDirection(:,2) + (doorWidth*(2*random(iTime,1:nAgents)-1))';
+    newDesiredDirection(:,2) = newDesiredDirection(:,2) + (doorWidth*(random(iTime,1:nAgents)))';
     agents(:,PROPERTIES.DesiredDirection) = newDesiredDirection .* ...
       ( (1./sqrt( sum( newDesiredDirection.^2, 2 ) )) * [1,1] );
     
@@ -99,18 +99,18 @@ for indexDesiredVelocity = 0.6:0.2:8
     %   % Update impatience
     %   agents(:,PROPERTIES.Impatience) = 1 - avgSpeedInDesiredDirection ./ ...
     %       agents(:,PROPERTIES.DesiredSpeed);
-    %
-    %       % Update graphics
-    %     %   hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
-    %       set(hAgentPlot, 'XData', agents(:,PROPERTIES.Position(1)), 'YData', ...
-    %           agents(:,PROPERTIES.Position(2)));
-    %       set(hTimeStamp, 'String', sprintf('Time: %.5f s',time));
-    %       drawnow update;
-    
-    %   movieStruct(iTime) = getframe(gcf);
     if mod(iTime,10000)==0
       disp(time);
+      
+      % Update graphics
+      %   hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
+      set(hAgentPlot, 'XData', agents(:,PROPERTIES.Position(1)), 'YData', ...
+        agents(:,PROPERTIES.Position(2)));
+      set(hTimeStamp, 'String', sprintf('Time: %.5f s',time));
+      drawnow update;
     end
+    %   movieStruct(iTime) = getframe(gcf);
+    
   end
   
   nSurvivors = nAgentsOrg + nAlive - nAgents;
@@ -134,11 +134,25 @@ for indexDesiredVelocity = 0.6:0.2:8
   text(indexDesiredVelocity,meanEscapeTime,num2str(nSurvivors))
   hold off
   drawnow update
-  numberOfAgentsOut(:,1) = [];
+  %numberOfAgentsOut(:,1) = [];
   saveTime(end+1,:) = [numberOfAgentsOut(2,:), zeros(1,nAgents-nAlive)];
   
   saveNSurvive(end+1) = nSurvivors;
 end
+
+SaveDataToFile(saveTime,'Time','','',1);
+saveDataToFile(saveNSurvive,'NSurvive','','',1);
+figure(4)
+xlabel('Desiered Velocity v_0 [m/s]');
+ylabel('Total Escape Time [t]');
+label('Number of Survivors');
+figure(5)
+xlabel('Desiered Velocity v_0 [m/s]');
+ylabel('Mean Escape Time [t]');
+label('Number of Survivors');
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %movie2avi(F, 'run1.avi', 'compression', 'None');
 
