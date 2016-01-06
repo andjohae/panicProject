@@ -1,13 +1,16 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Saves matrix 'data' to a .txt file with csv format %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function SaveDataToFile(data, filename, header, timeBoolean)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Saves matrix 'data' to a .txt file with chosen format (tsv default) %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function SaveDataToFile(data, filename, header, delimiter, timeBoolean)
 
   % Assign default arguments
   if (nargin < 5)
     timeBoolean = false;
   end
-  if (nargin < 4)  
+  if (nargin < 4)
+    delimiter = '\t';
+  end
+  if (nargin < 3)  
     header = sprintf('');
   end
   if (nargin < 2)
@@ -23,20 +26,16 @@ function SaveDataToFile(data, filename, header, timeBoolean)
     filename = strcat(filename,'_',datestr(now,'yyyy-mm-dd_HH:MM'),'.txt');
   end
   
-  % Open file
-  fileID = fopen(filename, 'w');
-  
   % Print header if passed to function
+  fileID = fopen(filename, 'w');
   if (~isempty(header))
-    fprintf(fileID, '%s\n', header);
-  end
-  
-  % Print data to file
-  nDataRows = size(data,1);
-  for iRow = 1:nDataRows
-    fprintf(fileID,'%g,',data(iRow,:));
-    fprintf(fileID,'\n');
+    fprintf(fileID, '%s\n', sprintf(header));
   end
   fclose(fileID);
+  
+  % Write data to file
+  dlmwrite(filename,data,'-append','delimiter',delimiter);
+
+  fprintf('Successfully saved data to ''%s''\n',filename);
   
 end
