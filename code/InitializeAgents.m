@@ -16,7 +16,7 @@ end
 pos(:,1) = pos(:,1)/(max(pos(:,1))+1)*roomSize(1);
 pos(:,2) = pos(:,2)/(max(pos(:,2))+1)*roomSize(2);
 %plot(pos(:,1),pos(:,2),'.','MarkerSize',20)
-pertubation = ((pos(1,1)-pos(2,1))/2-meanRadius)*(2*rand(nAgents,2)-1);
+pertubation = ((pos(2,1)-pos(2,2))-meanRadius)/4*(2*rand(nAgents,2)-1);
 agents(:,PROPERTIES.Position) = pos + pertubation;
   % - Velocity [3,4]
 agents(:,PROPERTIES.Velocity) = initialVelocity;
