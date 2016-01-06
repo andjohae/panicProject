@@ -16,7 +16,8 @@ end
 pos(:,1) = pos(:,1)/(max(pos(:,1))+1)*roomSize(1);
 pos(:,2) = pos(:,2)/(max(pos(:,2))+1)*roomSize(2);
 %plot(pos(:,1),pos(:,2),'.','MarkerSize',20)
-agents(:,PROPERTIES.Position) = pos;
+pertubation = ((pos(1,1)-pos(2,1))/2-meanRadius)*(2*rand(nAgents,2)-1);
+agents(:,PROPERTIES.Position) = pos + pertubation;
   % - Velocity [3,4]
 agents(:,PROPERTIES.Velocity) = initialVelocity;
   % - Mass [5]
@@ -35,4 +36,6 @@ agents(:,PROPERTIES.Velocity) = initialVelocity;
     agents(:,PROPERTIES.RepulsionExp) = 0.08*ones(nAgents,1);
   % - Impatience [13]
     agents(:,PROPERTIES.Impatience) = zeros(nAgents,1);
+  % - Injury Status [13]
+    agents(:,PROPERTIES.InjuryStatus) = zeros(nAgents,1);
 end
