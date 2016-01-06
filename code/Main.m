@@ -16,7 +16,7 @@ clear all;
 saveTime = zeros(1,51);
 saveNSurvive = 0;
 %  Read settings
-for indexDesiredVelocity = 1:0.2:8
+for indexDesiredVelocity = 0.6:0.2:8
   run('Parameters.m');
   %  Initialization
   targetPosition = [1.1*roomSize(1),0.5*roomSize(2)];
@@ -41,7 +41,7 @@ for indexDesiredVelocity = 1:0.2:8
   %run('SetupSimulationGraphics.m');
   % movieStruct = getframe(gcf); % PLAY: movie(figure,movieStruct,5)
   
-  random = rand(nTimeSteps,nAgents);
+  random = normrnd(0,1,nTimeSteps,nAgents);
   %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
   for iTime = 1:nTimeSteps
     
@@ -88,7 +88,7 @@ for indexDesiredVelocity = 1:0.2:8
     
     newDesiredDirection = ones(nAgents,1)...
       *(targetPosition) - agents(:,PROPERTIES.Position);
-    newDesiredDirection(:,2) = newDesiredDirection(:,2) + (2*doorWidth*(2*random(iTime,1:nAgents)-1))';
+    newDesiredDirection(:,2) = newDesiredDirection(:,2) + (doorWidth*(2*random(iTime,1:nAgents)-1))';
     agents(:,PROPERTIES.DesiredDirection) = newDesiredDirection .* ...
       ( (1./sqrt( sum( newDesiredDirection.^2, 2 ) )) * [1,1] );
     
