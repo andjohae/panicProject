@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Panic Project Main.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for fghj = 1:20
 clc;
 clear all;
 %%%%%%%%%%%%%%%%%%%%% TODO List %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,15 +162,10 @@ end
 
 SaveDataToFile(saveTime,'Time','',',',1);
 saveDataToFile(saveNSurvive,'NSurvive','',',',1);
-figure(4)
-xlabel('Desiered Velocity v_0 [m/s]');
-ylabel('Total Escape Time [t]');
-label('Number of Survivors');
-figure(5)
-xlabel('Desiered Velocity v_0 [m/s]');
-ylabel('Mean Escape Time [t]');
-label('Number of Survivors');
 
+ SaveDataToFile(saveTime,'data_2/Time','',',',1);
+  %SaveDataToFile(saveNSurvive,'data_2/NSurvive','',',',1);
+end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
