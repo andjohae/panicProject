@@ -159,8 +159,8 @@ for indexDesiredVelocity = 1:0.2:8
   saveMaxForces(end+1,:) = [maxForceAgent, maxForceWall];%0]
 end
 
-SaveDataToFile(saveTime,'Time','','',1);
-saveDataToFile(saveNSurvive,'NSurvive','','',1);
+SaveDataToFile(saveTime,'Time','',',',1);
+saveDataToFile(saveNSurvive,'NSurvive','',',',1);
 figure(4)
 xlabel('Desiered Velocity v_0 [m/s]');
 ylabel('Total Escape Time [t]');
