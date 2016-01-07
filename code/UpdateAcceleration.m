@@ -32,9 +32,17 @@ function [acceleration, agents, checkForces] = UpdateAcceleration(agents,...
 %     - 1).*agents(:,PROPERTIES.Radius);
 
   
-%   socialAcceleration = CalculateSocialAcc(agents,PROPERTIES,socialCorrelations);  
-    
+%   socialAcceleration = CalculateSocialAcc(agents,PROPERTIES,socialCorrelations); 
+  
     checkForces = [radialAgentForces,radialWallForces];
   acceleration = desiredVelocityCorrection + (agentForces + wallForces).*...
       repmat(mass.^(-1),1,2);% + socialAcceleration;
+%     
+%   % Print out size of acceleration components
+%   maxDesired = max(sqrt(sum(desiredVelocityCorrection.^2)));
+%   maxAgents = max(sqrt(sum(agentForces.^2)))/(mass(1)*maxDesired);
+%   maxWalls =  max(sqrt(sum(wallForces.^2)))/(mass(1)*maxDesired);
+%   maxSocial = max(sqrt(sum(socialAcceleration.^2)))/maxDesired;
+%   % Max acc components relative to the desired velocity correction\n
+%   fprintf('agents: %8.3f\t walls: %8.3f\t social %8.3f\n',maxAgents,maxWalls,maxSocial); 
 end
