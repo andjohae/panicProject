@@ -1,5 +1,5 @@
-function wallForces =  CalculateWallForces_2(agents,PROPERTIES,walls,...
-    bodyForceCoeff,frictionForceCoeff)
+function [wallForces, radialWallForces] =  CalculateWallForces_2(agents,...
+    PROPERTIES,walls,bodyForceCoeff,frictionForceCoeff)
 
   % This version of the code only allows for agent-wall interaction if the
   % agent (mass centre) is in front of the wall.
@@ -15,6 +15,7 @@ function wallForces =  CalculateWallForces_2(agents,PROPERTIES,walls,...
   nAgents = size(agents,1);
   nWalls = size(walls,1)-1;
   wallForces = zeros(nAgents,2);
+  radialWallForces = zeros(nAgents,2);
   
   for iAgent = 1:nAgents % Loop over all agents
     repulsionForce = zeros(nWalls,2);
@@ -39,7 +40,7 @@ function wallForces =  CalculateWallForces_2(agents,PROPERTIES,walls,...
         projectionPosition = wallTangent * (position(iAgent,:)-walls(iCorner,1:2))'; 
         
         % Only interact with wall if projection of agent is ON the wall segment
-        if ( (projectionPosition > (0-radius(iAgent))) && (projectionPosition < (wallLength+radius(iAgent))) ) 
+        if ( (projectionPosition >= 0) && (projectionPosition <= wallLength) ) 
           distance = ( position(iAgent,:) - walls(iCorner,1:2) ) * wallNormal';
           
           % Calculate repulsion force
@@ -61,8 +62,10 @@ function wallForces =  CalculateWallForces_2(agents,PROPERTIES,walls,...
       end % End of interaction check
       
     end % End of wall loop
+     magnitudeF = sum(bodyForce,1);
+    radialWallForces(iAgent,:) = magnitudeF;
     
-    wallForces(iAgent,:) = sum(repulsionForce,1) + sum(bodyForce,1) + ...
+    wallForces(iAgent,:) = sum(repulsionForce,1) + magnitudeF + ...
         sum(frictionForce,1);
     
   end
