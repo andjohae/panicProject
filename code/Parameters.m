@@ -29,16 +29,18 @@ doorWidth = 1;      % Author's suggestion: 1 [m]
 openingLength = 5;
 
 % Agent properties
-meanMass = 70;    % Author's suggestion: 80 [kg]
-meanRadius = 0.2; % Author's suggestion: 0.25-0.35 [m]
+meanMass = 80;    % Author's suggestion: 80 [kg]
+meanRadius = 0.3; % Author's suggestion: 0.25-0.35 [m]
 initialVelocity = zeros(nAgents,2);
 initialDesiredSpeed = 1*ones(nAgents,1);
 maxDesiredSpeed = 5;
 desiredTimeResolution = 0.5*ones(nAgents,1);
+
 % Physics settings
 maxVelocity = 1;
 bodyForceCoeff = 1.2*10^5;      % Author's suggestion: 1.2*10^5 [kg s^(-2)]
 frictionForceCoeff = 2.4*10^5;  % Author's suggestion: 2.4*10^5 [kg m^(-1) s^(-1)]
+injuryThreshold = 160000;         % Author's suggestion: 1.6*10^3 [N m^(-1)]
 
 % Social settings
 ratioBondsPerAgent = 0.1;
