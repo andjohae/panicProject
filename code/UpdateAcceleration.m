@@ -1,5 +1,6 @@
-function acceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
-    bodyForceCoeff,frictionForceCoeff,socialCorrelations)
+function [acceleration, agents, checkForces] = UpdateAcceleration(agents,...
+    walls,PROPERTIES,bodyForceCoeff,frictionForceCoeff,socialCorrelations,...
+    injuryThreshold)
 
   % Read properties
   velocity = agents(:,PROPERTIES.Velocity);
@@ -12,14 +13,28 @@ function acceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
   desiredVelocityCorrection = (repmat(desiredSpeed,1,2).*desiredDirection - ...
       velocity) .* repmat(desiredTimeResolution.^(-1),1,2);
     
-  agentForces = CalculateAgentForces(agents, PROPERTIES, bodyForceCoeff,...
-      frictionForceCoeff);
+  [agentForces, radialAgentForces] = CalculateAgentForces(agents, PROPERTIES,...
+    bodyForceCoeff, frictionForceCoeff);
   
-  wallForces = CalculateWallForces_2(agents, PROPERTIES, walls, bodyForceCoeff,...
-      frictionForceCoeff);  
+  [wallForces, radialWallForces] = CalculateWallForces_2(agents, PROPERTIES,...
+    walls, bodyForceCoeff, frictionForceCoeff);  
+  
+
+%   % Check if any agents are injured
+  radialMagnitude = sum((radialAgentForces + radialWallForces).^2,2).^0.5;      % OBS
+  
+  agents(:,PROPERTIES.InjuryStatus) = ((radialMagnitude./...
+    (2*pi*agents(:,PROPERTIES.Radius))) >= injuryThreshold) + 0;
+
+%   agents(:,PROPERTIES.RepulsionCoeff) = -(agents(:,PROPERTIES.InjuryStatus)...
+%     - 1).*agents(:,PROPERTIES.RepulsionCoeff);
+%   agents(:,PROPERTIES.Radius) = -(agents(:,PROPERTIES.InjuryStatus)...
+%     - 1).*agents(:,PROPERTIES.Radius);
+
+  
+%   socialAcceleration = CalculateSocialAcc(agents,PROPERTIES,socialCorrelations);  
     
-  socialAcceleration = CalculateSocialAcc(agents,PROPERTIES,socialCorrelations);  
-    
+    checkForces = [radialAgentForces,radialWallForces];
   acceleration = desiredVelocityCorrection + (agentForces + wallForces).*...
-      repmat(mass.^(-1),1,2) + socialAcceleration;
+      repmat(mass.^(-1),1,2);% + socialAcceleration;
 end
