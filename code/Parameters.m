@@ -31,6 +31,7 @@ openingLength = 5;
 % Agent properties
 meanMass = 80;    % Author's suggestion: 80 [kg]
 meanRadius = 0.3; % Author's suggestion: 0.25-0.35 [m]
+radiusDistWidth = 0.1; % [m], Used for uniform distribution of radii
 initialVelocity = zeros(nAgents,2);
 initialDesiredSpeed = 1*ones(nAgents,1);
 maxDesiredSpeed = 5;

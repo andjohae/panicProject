@@ -28,7 +28,7 @@ set(gca, 'Units', 'Points');
 axpos = get(gca,'Position');
 set(gca, 'Units', currentunits);
 
-radius = meanRadius;% agents(:,PROPERTIES.Radius);
+radius = agents(:,PROPERTIES.Radius);
 markerWidth = (2*radius)./diff(xlim).*axpos(3);
 markerHeight = (2*radius)./diff(ylim).*axpos(4);
 set(hAgentPlot, 'SizeData', markerWidth.*markerHeight);

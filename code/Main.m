@@ -4,13 +4,7 @@
 clc;
 clear all;
 %%%%%%%%%%%%%%%%%%%%% TODO List %%%%%%%%%%%%%%%%%%%%%%%%%%
-% TODO: UpdatePositions() that checks if new positons are valid and removes
-%   agents that have arrived at goal (vertical line at target position)
-% - Should also count when agents escape the room
-% TODO: Implement social force
-% - Modular mathematical formula for social force, ie. allow different
-%   functions (exponential, linear, quadratic etc.) of partner distance
-% TODO: Fix agent plot --> scatter() can set individual markersizes!
+% TODO: Run tests and collect data!
 
 %%%%%%%%%%%%%%%%%%%%%% Initilize %%%%%%%%%%%%%%%%%%%%%%%%%
 saveTime = zeros(1,52);
@@ -31,8 +25,8 @@ for indexDesiredVelocity = 1:0.2:8
   walls = WallGeneration(roomSize,doorWidth,openingLength);
   
   % - Agents
-  agents = InitializeAgents(nAgents,PROPERTIES,meanMass,meanRadius,...
-    targetPosition,roomSize, initialVelocity, initialDesiredSpeed, ...
+  agents = InitializeAgents(nAgents, PROPERTIES, meanMass, meanRadius,...
+    radiusDistWidth, targetPosition, roomSize, initialVelocity, initialDesiredSpeed, ...
     desiredTimeResolution);
   
   % - Social Bonds
@@ -123,6 +117,12 @@ for indexDesiredVelocity = 1:0.2:8
                     -(agents(:,PROPERTIES.InjuryStatus)-1)*[0 0 1];
       set(hAgentPlot, 'XData', agents(:,PROPERTIES.Position(1)), 'YData', ...
         agents(:,PROPERTIES.Position(2)),'CData',agentColors);
+      
+      radius = agents(:,PROPERTIES.Radius);
+      markerWidth = (2*radius)./diff(xlim).*axpos(3);
+      markerHeight = (2*radius)./diff(ylim).*axpos(4);
+      set(hAgentPlot, 'SizeData', markerWidth.*markerHeight);
+      
       set(hTimeStamp, 'String', sprintf('Time: %.5f s',time));
       drawnow update;
     end
