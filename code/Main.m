@@ -13,18 +13,20 @@ clear all;
 % TODO: Fix agent plot --> scatter() can set individual markersizes!
 
 %%%%%%%%%%%%%%%%%%%%%% Initilize %%%%%%%%%%%%%%%%%%%%%%%%%
-saveTime = zeros(1,51);
+saveTime = zeros(1,52);
 saveNSurvive = 0;
+saveMaxForces = [0,0];%0]
 %  Read settings
-for indexDesiredVelocity = 0.8:0.2:8
+for indexDesiredVelocity = 1:0.2:8
   run('Parameters.m');
   %  Initialization
   targetPosition = [1.1*roomSize(1),0.5*roomSize(2)];
   avgSpeedInDesiredDirection=zeros(nAgents,1);
-  numberOfAgentsOut = [indexDesiredVelocity;0];
+  timeOfAgentsOut = indexDesiredVelocity;
   time = 0;
   nAgentsOrg = nAgents;
-  
+  maxForceAgent = 0;
+  maxForceWall = 0;
   % - Room (Walls)
   walls = WallGeneration(roomSize,doorWidth,openingLength);
   
@@ -41,16 +43,17 @@ for indexDesiredVelocity = 0.8:0.2:8
   run('SetupSimulationGraphics.m');
   % movieStruct = getframe(gcf); % PLAY: movie(figure,movieStruct,5)
   
-  random = normrnd(0,1,nTimeSteps,nAgents);
+  random = normrnd(0,1,nTimeSteps,nAgents)/2;
   %%%%%%%%%%%%%%%%%%%%%% Main Loop %%%%%%%%%%%%%%%%%%%%%%%%%
   for iTime = 1:nTimeSteps
     
-    nAlive = 0;
-    for iAlive = 1:nAgents
-      if agents(iAlive,PROPERTIES.InjuryStatus) < 1
-        nAlive = nAlive + 1;
-      end
-    end
+    %     nAlive = 0;
+    %     for iAlive = 1:nAgents
+    %       if agents(iAlive,PROPERTIES.InjuryStatus) < 1
+    %         nAlive = nAlive + 1;
+    %       end
+    %     end
+    nAlive = length(find(~agents(:,PROPERTIES.InjuryStatus)));
     %Break Condition
     if nAlive == 0;
       break;
@@ -58,29 +61,41 @@ for indexDesiredVelocity = 0.8:0.2:8
     
     % Update model physics
     % - acceleration
-    currentAcceleration = UpdateAcceleration(agents,walls,PROPERTIES,...
-      bodyForceCoeff,frictionForceCoeff,socialCorrelations);
+    [currentAcceleration, agents, checkForces] = UpdateAcceleration(agents,...
+      walls,PROPERTIES,bodyForceCoeff,frictionForceCoeff,socialCorrelations,...
+      injuryThreshold);
+    
+    if checkForces(1) > maxForceAgent
+      maxForceAgent = checkForces(1);
+    end
+    if checkForces(2) > maxForceWall
+      maxForceWall = checkForces(1);
+    end
+    
     % - variable time step
     deltaTime = CalculateVariableTimeStep(currentAcceleration,defaultDeltaTime,...
-      velocityChangeLimit, timeStepMultiplier, minimumDeltaTime);
+      velocityChangeLimit, timeStepMultiplier, minimumDeltaTime,...
+      agents(:,PROPERTIES.InjuryStatus));
     time = time + deltaTime;
     % - velocity
     agents(:,PROPERTIES.Velocity) = agents(:,PROPERTIES.Velocity) + ...
       currentAcceleration .* deltaTime;
     % - position
     agents(:,PROPERTIES.Position) = agents(:,PROPERTIES.Position) + ...
+      (~logical(agents(:,PROPERTIES.InjuryStatus)))*[1,1] .* ... % Don't move injured agents
       agents(:,PROPERTIES.Velocity).*deltaTime;
+    
     [agents,nAgents,avgSpeedInDesiredDirection,initialDesiredSpeed,...
-      socialCorrelations,numberOfAgentsOut ]...
+      socialCorrelations,timeOfAgentsOut ]...
       = RemoveAgentIfOut( agents,nAgents,PROPERTIES,...
       roomSize,avgSpeedInDesiredDirection,initialDesiredSpeed,...
-      socialCorrelations,time,numberOfAgentsOut );
+      socialCorrelations,time,timeOfAgentsOut );
     %   % Accumulate speed in desired direction
     %   avgSpeedInDesiredDirection = (avgSpeedInDesiredDirection + ...
     %       sum(agents(:,PROPERTIES.Velocity).*(agents(:,PROPERTIES.DesiredDirection)),2)...
     %       .* deltaTime)/2;
     
-    % Update desired direction
+    % Update desired direction'MarkerEdgeColor','red'
     
     %
     %     newDesiredDirection = (0.1*(2*random(iTime,1:nAgents)')+1)...
@@ -99,13 +114,15 @@ for indexDesiredVelocity = 0.8:0.2:8
     %   % Update impatience
     %   agents(:,PROPERTIES.Impatience) = 1 - avgSpeedInDesiredDirection ./ ...
     %       agents(:,PROPERTIES.DesiredSpeed);
-    if mod(iTime,10000)==0
+    if mod(iTime,1000)==0
       disp(time);
       
       % Update graphics
       %   hSocialPlot = gplot(socialCorrelations ,agents(:,PROPERTIES.Position),'k-');
+      agentColors = agents(:,PROPERTIES.InjuryStatus)*[1 0.4 0] + ...
+                    -(agents(:,PROPERTIES.InjuryStatus)-1)*[0 0 1];
       set(hAgentPlot, 'XData', agents(:,PROPERTIES.Position(1)), 'YData', ...
-        agents(:,PROPERTIES.Position(2)));
+        agents(:,PROPERTIES.Position(2)),'CData',agentColors);
       set(hTimeStamp, 'String', sprintf('Time: %.5f s',time));
       drawnow update;
     end
@@ -114,15 +131,15 @@ for indexDesiredVelocity = 0.8:0.2:8
   end
   
   nSurvivors = nAgentsOrg + nAlive - nAgents;
-  meanEscapeTime = sum(numberOfAgentsOut(2,:))/length(numberOfAgentsOut(2,:));
+  meanEscapeTime = sum(timeOfAgentsOut)/length(timeOfAgentsOut);
   figure(4)
   hold on
   if nAlive - nAgents == 0
-    plot(indexDesiredVelocity,numberOfAgentsOut(2,end),'g*');
+    plot(indexDesiredVelocity,timeOfAgentsOut(end),'g*');
   else
-    plot(indexDesiredVelocity,numberOfAgentsOut(2,end),'r*');
+    plot(indexDesiredVelocity,timeOfAgentsOut(end),'r*');
   end
-  text(indexDesiredVelocity,numberOfAgentsOut(2,end),num2str(nSurvivors))
+  text(indexDesiredVelocity,timeOfAgentsOut(end),num2str(nSurvivors))
   
   figure(5)
   hold on
@@ -135,9 +152,11 @@ for indexDesiredVelocity = 0.8:0.2:8
   hold off
   drawnow update
   %numberOfAgentsOut(:,1) = [];
-  saveTime(end+1,:) = [numberOfAgentsOut(2,:), zeros(1,nAgents-nAlive)];
+  saveTime(end+1,:) = [timeOfAgentsOut, zeros(1,nAgentsOrg + 1-length(timeOfAgentsOut))];
   
   saveNSurvive(end+1) = nSurvivors;
+  
+  saveMaxForces(end+1,:) = [maxForceAgent, maxForceWall];%0]
 end
 
 SaveDataToFile(saveTime,'Time','','',1);
