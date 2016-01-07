@@ -12,18 +12,19 @@ PROPERTIES = struct('Position',[1,2],...
   'DesiredTimeResolution',10,...
   'RepulsionCoeff',11,...
   'RepulsionExp',12,...
-  'Impatience',13);
+  'Impatience',13,...
+  'InjuryStatus',14);
 
 % Simulation parameters
-nAgents = 81;
-nTimeSteps = 10^4;
+nAgents = 51;
+nTimeSteps = 10^6;
 defaultDeltaTime = 0.01;    % Author's suggestion: 0.01 [s]
 timeStepMultiplier = 0.95;  % Author's suggestion: 0.95 [s]
 minimumDeltaTime = 10^(-5); 
 velocityChangeLimit = 0.05; % Author's suggestion: 0.01 [s]
 
 % Room properties
-roomSize = [20 20]; % Author's suggestion: [15 15] [m]
+roomSize = [15 15]; % Author's suggestion: [15 15] [m]
 doorWidth = 1;      % Author's suggestion: 1 [m]
 openingLength = 5;
 
@@ -33,11 +34,13 @@ meanRadius = 0.3; % Author's suggestion: 0.25-0.35 [m]
 initialVelocity = zeros(nAgents,2);
 initialDesiredSpeed = 1*ones(nAgents,1);
 maxDesiredSpeed = 5;
-desiredTimeResolution = 1*ones(nAgents,1);
+desiredTimeResolution = 0.5*ones(nAgents,1);
+
 % Physics settings
 maxVelocity = 1;
 bodyForceCoeff = 1.2*10^5;      % Author's suggestion: 1.2*10^5 [kg s^(-2)]
 frictionForceCoeff = 2.4*10^5;  % Author's suggestion: 2.4*10^5 [kg m^(-1) s^(-1)]
+injuryThreshold = 160000;         % Author's suggestion: 1.6*10^3 [N m^(-1)]
 
 % Social settings
 ratioBondsPerAgent = 0.1;

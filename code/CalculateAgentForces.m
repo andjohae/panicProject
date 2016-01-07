@@ -1,7 +1,5 @@
-function agentForces = CalculateAgentForces(agents, PROPERTIES, bodyForceCoeff,...
-    frictionForceCoeff)
-  
-  % Idea: Can we shorten evaluation time if we calculate forces pairwise?
+function [agentForces, radialAgentForces] = CalculateAgentForces(agents,...
+    PROPERTIES, bodyForceCoeff, frictionForceCoeff)
   
   % Read necessary properties
   position = agents(:,PROPERTIES.Position);
@@ -13,6 +11,7 @@ function agentForces = CalculateAgentForces(agents, PROPERTIES, bodyForceCoeff,.
   % Initialization
   nAgents = size(agents,1);
   agentForces = zeros(nAgents,2);
+  radialAgentForces = zeros(nAgents,2);
   
   % Loop over all agents
   for i = 1:nAgents
@@ -44,7 +43,8 @@ function agentForces = CalculateAgentForces(agents, PROPERTIES, bodyForceCoeff,.
       end
     end
     
-    % Expansion: check if body forces exceed injury tolerence
+    % Save radial forces
+    radialAgentForces(i,:) = sum(bodyForce,1);
     
     % Calculate sum of interaction forces
     agentForces(i,:) = sum(repulsionForce,1) + sum(bodyForce,1) + sum(frictionForce,1);
