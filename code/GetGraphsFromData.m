@@ -16,7 +16,7 @@ for j = 1:nVel
   end
   
   %Total time plot
-  figure(4)
+  figure(6)
   hold on
   if 1==1;%survivors(j) ==length(time)
     plot(desiredVelocity,time(end),'kx')
@@ -27,7 +27,7 @@ for j = 1:nVel
   %text(desiredVelocity,time(end),num2str(survivors(j)))
   
   %Mean time plot
-  figure(5)
+  figure(7)
   hold on
   if 1==1;%survivors(j) ==length(time)
     plot(desiredVelocity,sum(time)/length(time),'kx')
@@ -36,22 +36,21 @@ for j = 1:nVel
   end
   errorbar(desiredVelocity,sum(time)/length(time),sum(e(j,2:end))/length(e(j,2:end)),'k');
   %text(desiredVelocity,sum(time)/length(time),num2str(survivors(j)))
-  
-  %Label
-  figure(4)
-  xlabel('Desiered Velocity $v_0$ [m/s]','Interpreter','Latex','FontSize',14);
-  ylabel('Total Escape Time [s]','Interpreter','Latex','FontSize',14);
-  title('Total Escape Time for 51 Agents with fixed Desired Speed','Interpreter',...
-    'Latex','FontSize',14);
-  %label('Number of Survivors');
-  grid on;
-  figure(5)
-  xlabel('Desiered Velocity $v_0$ [m/s]','Interpreter','Latex','FontSize',14);
-  ylabel('Mean Escape Time [s]','Interpreter','Latex','FontSize',14);
-  title('Mean Escape Time for 51 Agents with fixed Desired Speed','Interpreter',...
-    'Latex','FontSize',14);
+end
 
-  %label('Number of Survivors');
-  grid on;
-  hold off
+%Label
+figure(6)
+xlabel('Desired Velocity $v_0$ [m/s]','Interpreter','Latex','FontSize',14);
+ylabel('Total Escape Time [s]','Interpreter','Latex','FontSize',14);
+title('Total Escape Time for 51 Agents with fixed Desired Speed','Interpreter',...
+  'Latex','FontSize',14);
+grid on;
+
+figure(7)
+xlabel('Desired Velocity $v_0$ [m/s]','Interpreter','Latex','FontSize',14);
+ylabel('Mean Escape Time [s]','Interpreter','Latex','FontSize',14);
+title('Mean Escape Time for 51 Agents with fixed Desired Speed','Interpreter',...
+  'Latex','FontSize',14);
+grid on;
+hold off
 end
